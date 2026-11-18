@@ -5,3 +5,5 @@ server/database/reviews.json
 server/database/dealerships.json
 __pycache__/
 *.pyc
+server/frontend/build/
+server/frontend/node_modules/

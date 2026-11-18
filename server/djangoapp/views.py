@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .models import CarMake, CarModel
 from .restapis import get_request, analyze_review_sentiments, post_review
 # from .populate import initiate
 
@@ -137,3 +138,16 @@ def add_review(request):
         except Exception:
             return JsonResponse({"status": 401, "message": "Error in posting review"})
     return JsonResponse({"status": 403, "message": "Unauthorized"})
+
+
+def get_cars(request):
+    carmodels = CarModel.objects.select_related('car_make').all()
+    data = [
+        {
+            "CarMake": car.car_make.name,
+            "CarModel": car.name,
+            "CarYear": car.year,
+        }
+        for car in carmodels
+    ]
+    return JsonResponse({"status": 200, "CarModels": data})
